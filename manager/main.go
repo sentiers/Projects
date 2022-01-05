@@ -22,12 +22,10 @@ func main() {
 	if err != nil {
 		fmt.Println("Status: ", err)
 	}
-
-	err = config.DB.AutoMigrate(&models.Company{})
+	err = config.DB.AutoMigrate(&models.Company{}, &models.Department{}, &models.Team{}, &models.Employee{})
 
 	r := routes.Routers()
 	r.Use(gin.Logger())
 
 	err = r.Run()
-
 }
