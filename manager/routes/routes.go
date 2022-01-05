@@ -2,6 +2,7 @@ package routes
 
 import (
 	"manager/controller"
+	"manager/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,32 +11,52 @@ func Routers() *gin.Engine {
 	r := gin.Default()
 
 	// company
-	r.GET("company", controller.GetAllCompanies)
-	r.POST("company", controller.CreateCompany)
-	r.GET("company/:id", controller.GetCompanyById)
-	r.PUT("company/:id", controller.UpdateCompany)
-	r.DELETE("company/:id", controller.DeleteCompany)
+	c := r.Group("/company")
+	{
+		c.Use(middleware.Authz())
+		c.GET("/", controller.GetAllCompanies)
+		c.POST("/", controller.CreateCompany)
+		c.GET("/:id", controller.GetCompanyById)
+		c.PUT("/:id", controller.UpdateCompany)
+		c.DELETE("/:id", controller.DeleteCompany)
+	}
 
 	// department
-	r.GET("department", controller.GetAllDepartments)
-	r.POST("department", controller.CreateDepartment)
-	r.GET("department/:id", controller.GetDepartmentById)
-	r.PUT("department/:id", controller.UpdateDepartment)
-	r.DELETE("department/:id", controller.DeleteDepartment)
+	d := r.Group("/department")
+	{
+		d.Use(middleware.Authz())
+		d.GET("/", controller.GetAllDepartments)
+		d.POST("/", controller.CreateDepartment)
+		d.GET("/:id", controller.GetDepartmentById)
+		d.PUT("/:id", controller.UpdateDepartment)
+		d.DELETE("/:id", controller.DeleteDepartment)
+	}
 
 	// team
-	r.GET("team", controller.GetAllTeams)
-	r.POST("team", controller.CreateTeam)
-	r.GET("team/:id", controller.GetTeamById)
-	r.PUT("team/:id", controller.UpdateTeam)
-	r.DELETE("team/:id", controller.DeleteTeam)
+	t := r.Group("/team")
+	{
+		t.Use(middleware.Authz())
+		t.GET("/", controller.GetAllTeams)
+		t.POST("/", controller.CreateTeam)
+		t.GET("/:id", controller.GetTeamById)
+		t.PUT("/:id", controller.UpdateTeam)
+		t.DELETE("/:id", controller.DeleteTeam)
+	}
 
 	// employee
-	r.GET("employee", controller.GetAllEmployees)
-	r.POST("employee", controller.CreateEmployee)
-	r.GET("employee/:id", controller.GetEmployeeById)
-	r.PUT("employee/:id", controller.UpdateEmployee)
-	r.DELETE("employee/:id", controller.DeleteEmployee)
+	e := r.Group("/employee")
+	{
+		e.Use(middleware.Authz())
+		e.GET("/", controller.GetAllEmployees)
+		e.POST("/", controller.CreateEmployee)
+		e.GET("/:id", controller.GetEmployeeById)
+		e.PUT("/:id", controller.UpdateEmployee)
+		e.DELETE("/:id", controller.DeleteEmployee)
+	}
+
+	// auth
+	r.POST("signup", controller.Signup)
+	r.POST("login", controller.Login)
 
 	return r
 }
