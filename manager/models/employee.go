@@ -7,6 +7,8 @@ import (
 type Employee struct {
 	Id             int    `json:"id"`
 	EmployeeName   string `json:"employeename"`
+	Email          string `json:"email"`
+	PhoneNumber    string `json:"phonenumber"`
 	TeamName       string `json:"teamname"`
 	DepartmentName string `json:"departmentname"`
 	CompanyName    string `json:"companyname"`
