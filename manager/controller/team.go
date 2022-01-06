@@ -15,7 +15,7 @@ func GetAllTeams(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, team)
+		c.JSON(http.StatusOK, team) // return all data
 	}
 }
 

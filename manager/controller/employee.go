@@ -15,7 +15,7 @@ func GetAllEmployees(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, employee)
+		c.JSON(http.StatusOK, employee) // return all data
 	}
 }
 

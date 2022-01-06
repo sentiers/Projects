@@ -8,21 +8,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Authz validates token and authorizes users
+// ensure if user has validate token
 func Authz() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		// try reading HTTP Header
 		clientToken := c.Request.Header.Get("Authorization")
+		// when there is no token in authorization header
 		if clientToken == "" {
 			c.JSON(403, "No Authorization header provided")
 			c.Abort()
 			return
 		}
 
+		// extract token from string "Bearer token"
 		extractedToken := strings.Split(clientToken, "Bearer ")
 
 		if len(extractedToken) == 2 {
 			clientToken = strings.TrimSpace(extractedToken[1])
 		} else {
+			// when token format is incorrect
 			c.JSON(400, "Incorrect Format of Authorization Token")
 			c.Abort()
 			return
@@ -30,10 +35,11 @@ func Authz() gin.HandlerFunc {
 
 		jwtWrapper := auth.JwtWrapper{
 			SecretKey: "verysecretkey",
-			Issuer:    "AuthService",
+			Issuer:    "Alchera",
 		}
 
 		claims, err := jwtWrapper.ValidateToken(clientToken)
+		// when token is invalid
 		if err != nil {
 			c.JSON(401, err.Error())
 			c.Abort()
@@ -41,8 +47,6 @@ func Authz() gin.HandlerFunc {
 		}
 
 		c.Set("email", claims.Email)
-
 		c.Next()
-
 	}
 }

@@ -15,7 +15,7 @@ func GetAllCompanies(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, company)
+		c.JSON(http.StatusOK, company) // return all data
 	}
 }
 

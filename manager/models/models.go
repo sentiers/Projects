@@ -6,7 +6,7 @@ import (
 
 // Company Model=====================================================
 
-type Company struct { // preload
+type Company struct {
 	Id          uint   `gorm:"primarykey" json:"id"`
 	CompanyName string `gorm:"type:varchar(255); not null" json:"companyname"`
 }
@@ -49,10 +49,11 @@ func DeleteCompany(company *Company, key string) (err error) {
 // Department Model=====================================================
 
 type Department struct {
-	Id             uint    `gorm:"primarykey" json:"id"`
-	DepartmentName string  `gorm:"type:varchar(255); not null" json:"departmentname"`
-	Company        Company `gorm:"foreignkey:CompanyId; references:Id"`
-	CompanyId      uint    `json:"companyid"`
+	Id             uint   `gorm:"primarykey" json:"id"`
+	DepartmentName string `gorm:"type:varchar(255); not null" json:"departmentname"`
+	// set foreignkey
+	Company   Company `gorm:"foreignkey:CompanyId; references:Id"`
+	CompanyId uint    `json:"companyid"`
 }
 
 func (c *Department) TableName() string {
@@ -93,8 +94,9 @@ func DeleteDepartment(department *Department, key string) (err error) {
 // Team Model=====================================================
 
 type Team struct {
-	Id           int        `gorm:"primarykey" json:"id"`
-	TeamName     string     `gorm:"type:varchar(255); not null" json:"teamname"`
+	Id       int    `gorm:"primarykey" json:"id"`
+	TeamName string `gorm:"type:varchar(255); not null" json:"teamname"`
+	// set foreignkey
 	Department   Department `gorm:"foreignkey:DepartmentId; references:Id"`
 	DepartmentId uint       `json:"departmentid"`
 }
@@ -141,8 +143,9 @@ type Employee struct {
 	EmployeeName string `gorm:"type:varchar(255); not null" json:"employeename"`
 	Email        string `gorm:"type:varchar(255); not null" json:"email"`
 	PhoneNumber  string `gorm:"type:varchar(255); not null" json:"phonenumber"`
-	Team         Team   `gorm:"foreignkey:TeamId; references:Id"`
-	TeamId       uint   `json:"teamid"`
+	// set foreignkey
+	Team   Team `gorm:"foreignkey:TeamId; references:Id"`
+	TeamId uint `json:"teamid"`
 }
 
 func (c *Employee) TableName() string {

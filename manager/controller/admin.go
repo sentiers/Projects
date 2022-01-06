@@ -10,77 +10,18 @@ import (
 	"gorm.io/gorm"
 )
 
-// func CreateUser(c *gin.Context) {
-// 	var user models.User
-
-// 	// BindJSON -> ShouldBindJSON because of the [WARNING]
-// 	if err := c.ShouldBindJSON(&user); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 	}
-
-// 	if err := models.CreateUser(&user); err != nil {
-// 		log.Println(err.Error())
-// 		c.AbortWithStatus(http.StatusNotFound)
-// 	}
-
-// 	c.JSON(http.StatusOK, user)
-// }
-
-// Signup creates a user in db
-func Signup(c *gin.Context) {
-	var user models.User
-
-	err := c.ShouldBindJSON(&user)
-	if err != nil {
-		log.Println(err)
-
-		c.JSON(400, gin.H{
-			"msg": "invalid json",
-		})
-		c.Abort()
-
-		return
-	}
-
-	err = user.HashPassword(user.Password)
-	if err != nil {
-		log.Println(err.Error())
-
-		c.JSON(500, gin.H{
-			"msg": "error hashing password",
-		})
-		c.Abort()
-
-		return
-	}
-
-	err = user.CreateUserRecord()
-	if err != nil {
-		log.Println(err)
-
-		c.JSON(500, gin.H{
-			"msg": "error creating user",
-		})
-		c.Abort()
-
-		return
-	}
-
-	c.JSON(200, user)
-}
-
-// LoginPayload login body
+// login body
 type LoginPayload struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-// LoginResponse token response
+// token response
 type LoginResponse struct {
 	Token string `json:"token"`
 }
 
-// Login logs users in
+// login for admin user
 func Login(c *gin.Context) {
 	var payload LoginPayload
 	var user models.User
@@ -96,6 +37,7 @@ func Login(c *gin.Context) {
 
 	result := config.DB.Where("email = ?", payload.Email).First(&user)
 
+	// if couldn't find the matching email
 	if result.Error == gorm.ErrRecordNotFound {
 		c.JSON(401, gin.H{
 			"msg": "invalid user credentials",
@@ -104,6 +46,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// if the password is not matching
 	err = user.CheckPassword(payload.Password)
 	if err != nil {
 		log.Println(err)
@@ -114,9 +57,13 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// success
+
+	// start generating token ...
+
 	jwtWrapper := auth.JwtWrapper{
 		SecretKey:       "verysecretkey",
-		Issuer:          "AuthService",
+		Issuer:          "Alchera",
 		ExpirationHours: 24,
 	}
 
@@ -137,4 +84,41 @@ func Login(c *gin.Context) {
 	c.JSON(200, tokenResponse)
 
 	return
+}
+
+// register admin user
+func Signup(c *gin.Context) {
+	var user models.User
+
+	// BindJSON -> ShouldBindJSON because of the [WARNING]
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		log.Println(err)
+		c.JSON(400, gin.H{
+			"msg": "invalid json",
+		})
+		c.Abort()
+		return
+	}
+
+	err = user.HashPassword(user.Password)
+	if err != nil {
+		log.Println(err.Error())
+		c.JSON(500, gin.H{
+			"msg": "error hashing password",
+		})
+		c.Abort()
+		return
+	}
+
+	err = user.CreateUser()
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"msg": "error creating user",
+		})
+		c.Abort()
+		return
+	}
+	c.JSON(200, user) // success
 }

@@ -8,9 +8,11 @@ import (
 )
 
 func Routers() *gin.Engine {
+
+	// create gin app
 	r := gin.Default()
 
-	// company
+	// company api group
 	c := r.Group("/company")
 	{
 		c.Use(middleware.Authz())
@@ -21,7 +23,7 @@ func Routers() *gin.Engine {
 		c.DELETE("/:id", controller.DeleteCompany)
 	}
 
-	// department
+	// department api group
 	d := r.Group("/department")
 	{
 		d.Use(middleware.Authz())
@@ -32,7 +34,7 @@ func Routers() *gin.Engine {
 		d.DELETE("/:id", controller.DeleteDepartment)
 	}
 
-	// team
+	// team api group
 	t := r.Group("/team")
 	{
 		t.Use(middleware.Authz())
@@ -43,7 +45,7 @@ func Routers() *gin.Engine {
 		t.DELETE("/:id", controller.DeleteTeam)
 	}
 
-	// employee
+	// employee api group
 	e := r.Group("/employee")
 	{
 		e.Use(middleware.Authz())
@@ -54,9 +56,9 @@ func Routers() *gin.Engine {
 		e.DELETE("/:id", controller.DeleteEmployee)
 	}
 
-	// auth
-	r.POST("signup", controller.Signup)
-	r.POST("login", controller.Login)
+	// auth api
+	r.POST("/signup", controller.Signup)
+	r.POST("/login", controller.Login)
 
 	return r
 }

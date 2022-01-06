@@ -15,7 +15,7 @@ func GetAllDepartments(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, department)
+		c.JSON(http.StatusOK, department) // return all data
 	}
 }
 
