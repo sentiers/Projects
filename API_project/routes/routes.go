@@ -54,6 +54,10 @@ func Routers() *gin.Engine {
 		e.GET("/:id", controller.GetEmployeeById)
 		e.PUT("/:id", controller.UpdateEmployee)
 		e.DELETE("/:id", controller.DeleteEmployee)
+
+		// search and filter
+		e.GET("/name/:name", controller.GetEmployeeByName)
+		// e.GET("/create/:days", controller.GetEmployeeByDays)
 	}
 
 	// auth api

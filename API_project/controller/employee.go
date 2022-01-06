@@ -78,3 +78,14 @@ func DeleteEmployee(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"id" + id: "is deleted"})
 }
+
+func GetEmployeeByName(c *gin.Context) {
+	var employee models.Employee
+	name := c.Params.ByName("name")
+
+	if err := models.GetEmployeeByName(&employee, name); err != nil {
+		log.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+	c.JSON(http.StatusOK, employee)
+}
