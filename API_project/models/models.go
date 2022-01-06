@@ -2,6 +2,7 @@ package models
 
 import (
 	"manager/config"
+	"time"
 )
 
 // Company Model=====================================================
@@ -144,8 +145,9 @@ type Employee struct {
 	Email        string `gorm:"type:varchar(255); not null" json:"email"`
 	PhoneNumber  string `gorm:"type:varchar(255); not null" json:"phonenumber"`
 	// set foreignkey
-	Team   Team `gorm:"foreignkey:TeamId; references:Id"`
-	TeamId uint `json:"teamid"`
+	Team      Team      `gorm:"foreignkey:TeamId; references:Id"`
+	TeamId    uint      `json:"teamid"`
+	CreatedAt time.Time `json:"createdat"`
 }
 
 func (c *Employee) TableName() string {
