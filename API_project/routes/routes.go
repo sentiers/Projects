@@ -57,7 +57,7 @@ func Routers() *gin.Engine {
 
 		// search and filter
 		e.GET("/name/:name", controller.GetEmployeeByName)
-		// e.GET("/create/:days", controller.GetEmployeeByDays)
+		e.GET("/date/:date", controller.GetEmployeeByDate)
 	}
 
 	// auth api
