@@ -4,19 +4,19 @@ import (
 	"log"
 	"manager/models"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 func GetAllEmployees(c *gin.Context) {
+	pagination := GeneratePagination(c)
 	var employee []models.Employee
-	err := models.GetAllEmployees(&employee)
-
-	if err != nil {
+	if err := models.GetAllEmployees(&employee, &pagination); err != nil {
+		log.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
-	} else {
-		c.JSON(http.StatusOK, employee) // return all data
 	}
+	c.JSON(http.StatusOK, employee)
 }
 
 func CreateEmployee(c *gin.Context) {
@@ -104,4 +104,35 @@ func GetEmployeeByDate(c *gin.Context) {
 		c.AbortWithStatus(http.StatusNotFound)
 	}
 	c.JSON(http.StatusOK, employee)
+}
+
+// =========================================
+
+// pagination ex) ?page=2&limit=10&sort=created_at
+func GeneratePagination(c *gin.Context) models.Pagination {
+	// Initializing default ?page=1&limit=10
+	limit := 10
+	page := 1
+	sort := "id"
+	query := c.Request.URL.Query() // map[limit:[10] page:[2]]
+
+	for key, value := range query {
+		queryValue := value[len(value)-1]
+		switch key {
+		case "limit":
+			limit, _ = strconv.Atoi(queryValue)
+			break
+		case "page":
+			page, _ = strconv.Atoi(queryValue)
+			break
+		case "sort":
+			sort = queryValue
+			break
+		}
+	}
+	return models.Pagination{
+		Limit: limit,
+		Page:  page,
+		Sort:  sort,
+	}
 }
