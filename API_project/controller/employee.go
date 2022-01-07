@@ -78,3 +78,30 @@ func DeleteEmployee(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"id" + id: "is deleted"})
 }
+
+// =========================================
+
+// search
+func GetEmployeeByName(c *gin.Context) {
+	var employee []models.Employee
+	name := c.Params.ByName("name") // ex) John
+
+	if err := models.GetEmployeeByName(&employee, name); err != nil {
+		log.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+	c.JSON(http.StatusOK, employee)
+}
+
+// filter
+func GetEmployeeByDate(c *gin.Context) {
+
+	var employee []models.Employee
+	date := c.Params.ByName("date") // ex) 20200125
+
+	if err := models.GetEmployeeByDate(&employee, date); err != nil {
+		log.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+	c.JSON(http.StatusOK, employee)
+}

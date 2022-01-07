@@ -184,3 +184,19 @@ func DeleteEmployee(employee *Employee, key string) (err error) {
 	config.DB.Delete(employee, key)
 	return nil
 }
+
+// =========================================
+
+func GetEmployeeByName(employee *[]Employee, key string) (err error) {
+	if err = config.DB.Find(&employee, "employee_name = ?", key).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func GetEmployeeByDate(employee *[]Employee, key string) (err error) {
+	if err = config.DB.Find(&employee, "created_at >= ?", key).Error; err != nil {
+		return err
+	}
+	return nil
+}
