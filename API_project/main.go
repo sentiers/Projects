@@ -11,7 +11,6 @@ import (
 )
 
 func main() {
-
 	// initialize database
 	err := config.InitDatabase()
 	if err != nil {

@@ -1,25 +1,16 @@
 package models
 
 import (
-	"manager/admin"
 	"manager/config"
 	"strconv"
 	"testing"
 
 	"github.com/go-playground/assert/v2"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 )
-
-func dbConnection() {
-	dsn := "root:root@tcp(127.0.0.1:3306)/manager?charset=utf8mb4&parseTime=True&loc=Local"
-	config.DB, _ = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	_ = config.DB.AutoMigrate(&Company{}, &Department{}, &Team{}, &Employee{}, &admin.User{})
-}
 
 // Company Model Test ======================================
 func TestCreateCompany(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 	company := Company{CompanyName: "createcompany"}
 	if err := CreateCompany(&company); err != nil {
 		t.Error("not created")
@@ -30,7 +21,7 @@ func TestCreateCompany(t *testing.T) {
 }
 
 func TestGetAllCompanies(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 	companies := []Company{{CompanyName: "testcompany1"},
 		{CompanyName: "testcompany2"},
 		{CompanyName: "testcompany3"},
@@ -48,7 +39,7 @@ func TestGetAllCompanies(t *testing.T) {
 }
 
 func TestUpdateCompany(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 
 	company := Company{CompanyName: "updatecompany"}
 	if err := CreateCompany(&company); err != nil {
@@ -61,7 +52,7 @@ func TestUpdateCompany(t *testing.T) {
 }
 
 func TestDeleteCompany(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 
 	company := Company{CompanyName: "deletecompany"}
 	if err := CreateCompany(&company); err != nil {
@@ -79,7 +70,7 @@ func TestDeleteCompany(t *testing.T) {
 
 // Department Model Test ======================================
 func TestCreateDepartment(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 	department := Department{DepartmentName: "createdepartment", CompanyId: 1}
 	if err := CreateDepartment(&department); err != nil {
 		t.Error("not created")
@@ -90,7 +81,7 @@ func TestCreateDepartment(t *testing.T) {
 }
 
 func TestGetAllDepartments(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 	departments := []Department{{DepartmentName: "testdepartment1", CompanyId: 1},
 		{DepartmentName: "testdepartment2", CompanyId: 1},
 		{DepartmentName: "testdepartment3", CompanyId: 1},
@@ -108,7 +99,7 @@ func TestGetAllDepartments(t *testing.T) {
 }
 
 func TestUpdateDepartment(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 
 	department := Department{DepartmentName: "updatedepartment", CompanyId: 1}
 	if err := CreateDepartment(&department); err != nil {
@@ -121,7 +112,7 @@ func TestUpdateDepartment(t *testing.T) {
 }
 
 func TestDeleteDepartment(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 
 	department := Department{DepartmentName: "deletedepartment", CompanyId: 1}
 	if err := CreateDepartment(&department); err != nil {
@@ -139,7 +130,7 @@ func TestDeleteDepartment(t *testing.T) {
 
 // Team Model Test ======================================
 func TestCreateTeam(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 	team := Team{TeamName: "createteam", DepartmentId: 1}
 	if err := CreateTeam(&team); err != nil {
 		t.Error("not created")
@@ -150,7 +141,7 @@ func TestCreateTeam(t *testing.T) {
 }
 
 func TestGetAllTeams(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 	teams := []Team{{TeamName: "testteam1", DepartmentId: 1},
 		{TeamName: "testteam2", DepartmentId: 1},
 		{TeamName: "testteam3", DepartmentId: 1},
@@ -168,7 +159,7 @@ func TestGetAllTeams(t *testing.T) {
 }
 
 func TestUpdateTeam(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 
 	team := Team{TeamName: "updateteam", DepartmentId: 1}
 	if err := CreateTeam(&team); err != nil {
@@ -181,7 +172,7 @@ func TestUpdateTeam(t *testing.T) {
 }
 
 func TestDeleteTeam(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 
 	team := Team{TeamName: "createteam", DepartmentId: 1}
 	if err := CreateTeam(&team); err != nil {
@@ -199,7 +190,7 @@ func TestDeleteTeam(t *testing.T) {
 
 // Employee Model Test ======================================
 func TestCreateEmployee(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 	employee := Employee{EmployeeName: "createemployee", Email: "create@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
 	if err := CreateEmployee(&employee); err != nil {
 		t.Error("not created")
@@ -210,7 +201,7 @@ func TestCreateEmployee(t *testing.T) {
 }
 
 func TestGetAllEmployees(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 	//pagination := Pagination{Limit: 10, Page: 1, Sort: "id"}
 	employees := []Employee{{EmployeeName: "testemployee1", Email: "test1@email.com", PhoneNumber: "010-1234-5678", TeamId: 1},
 		{EmployeeName: "testemployee2", Email: "test2@email.com", PhoneNumber: "010-1234-5678", TeamId: 1},
@@ -229,7 +220,7 @@ func TestGetAllEmployees(t *testing.T) {
 }
 
 func TestUpdateEmployee(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 
 	employee := Employee{EmployeeName: "updateemployee", Email: "update@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
 	if err := CreateEmployee(&employee); err != nil {
@@ -242,7 +233,7 @@ func TestUpdateEmployee(t *testing.T) {
 }
 
 func TestDeleteEmployee(t *testing.T) {
-	dbConnection()
+	config.InitDatabase()
 
 	employee := Employee{EmployeeName: "deleteemployee", Email: "delete@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
 	if err := CreateEmployee(&employee); err != nil {
