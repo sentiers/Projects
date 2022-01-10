@@ -4,6 +4,7 @@ import (
 	"manager/config"
 	"strconv"
 	"testing"
+	"time"
 
 	"github.com/go-playground/assert/v2"
 )
@@ -20,22 +21,16 @@ func TestCreateCompany(t *testing.T) {
 	assert.Equal(t, company.CompanyName, company2.CompanyName)
 }
 
-func TestGetAllCompanies(t *testing.T) {
+func TestGetCompanyById(t *testing.T) {
 	config.InitDatabase()
-	companies := []Company{{CompanyName: "testcompany1"},
-		{CompanyName: "testcompany2"},
-		{CompanyName: "testcompany3"},
-	}
-	var count1 int64
-	config.DB.Table("company").Count(&count1)
 
-	for _, i := range companies {
-		_ = CreateCompany(&i)
+	company := Company{CompanyName: "getcompany"}
+	if err := CreateCompany(&company); err != nil {
+		t.Error("not created")
 	}
-
-	var count2 int64
-	config.DB.Table("company").Count(&count2)
-	assert.Equal(t, count1+3, count2)
+	if err := GetCompanyById(&company, strconv.FormatUint(uint64(company.Id), 10)); err != nil {
+		t.Error("not found")
+	}
 }
 
 func TestUpdateCompany(t *testing.T) {
@@ -80,22 +75,18 @@ func TestCreateDepartment(t *testing.T) {
 	assert.Equal(t, department.DepartmentName, department2.DepartmentName)
 }
 
-func TestGetAllDepartments(t *testing.T) {
+func TestGetDepartmentById(t *testing.T) {
 	config.InitDatabase()
-	departments := []Department{{DepartmentName: "testdepartment1", CompanyId: 1},
-		{DepartmentName: "testdepartment2", CompanyId: 1},
-		{DepartmentName: "testdepartment3", CompanyId: 1},
-	}
-	var count1 int64
-	config.DB.Table("department").Count(&count1)
 
-	for _, i := range departments {
-		_ = CreateDepartment(&i)
+	department := Department{DepartmentName: "getdepartment", CompanyId: 1}
+	if err := CreateDepartment(&department); err != nil {
+		t.Error("not created")
 	}
 
-	var count2 int64
-	config.DB.Table("department").Count(&count2)
-	assert.Equal(t, count1+3, count2)
+	if err := GetDepartmentById(&department, strconv.FormatUint(uint64(department.Id), 10)); err != nil {
+		t.Error("not found")
+	}
+
 }
 
 func TestUpdateDepartment(t *testing.T) {
@@ -140,22 +131,16 @@ func TestCreateTeam(t *testing.T) {
 	assert.Equal(t, team.TeamName, team2.TeamName)
 }
 
-func TestGetAllTeams(t *testing.T) {
+func TestGetTeamById(t *testing.T) {
 	config.InitDatabase()
-	teams := []Team{{TeamName: "testteam1", DepartmentId: 1},
-		{TeamName: "testteam2", DepartmentId: 1},
-		{TeamName: "testteam3", DepartmentId: 1},
-	}
-	var count1 int64
-	config.DB.Table("team").Count(&count1)
 
-	for _, i := range teams {
-		_ = CreateTeam(&i)
+	team := Team{TeamName: "getteam", DepartmentId: 1}
+	if err := CreateTeam(&team); err != nil {
+		t.Error("not created")
 	}
-
-	var count2 int64
-	config.DB.Table("team").Count(&count2)
-	assert.Equal(t, count1+3, count2)
+	if err := GetTeamById(&team, strconv.FormatUint(uint64(team.Id), 10)); err != nil {
+		t.Error("not found")
+	}
 }
 
 func TestUpdateTeam(t *testing.T) {
@@ -200,23 +185,18 @@ func TestCreateEmployee(t *testing.T) {
 	assert.Equal(t, employee.EmployeeName, employee2.EmployeeName)
 }
 
-func TestGetAllEmployees(t *testing.T) {
+func TestGetEmployeeById(t *testing.T) {
 	config.InitDatabase()
-	//pagination := Pagination{Limit: 10, Page: 1, Sort: "id"}
-	employees := []Employee{{EmployeeName: "testemployee1", Email: "test1@email.com", PhoneNumber: "010-1234-5678", TeamId: 1},
-		{EmployeeName: "testemployee2", Email: "test2@email.com", PhoneNumber: "010-1234-5678", TeamId: 1},
-		{EmployeeName: "testemployee3", Email: "test3@email.com", PhoneNumber: "010-1234-5678", TeamId: 1},
-	}
-	var count1 int64
-	config.DB.Table("employee").Count(&count1)
 
-	for _, i := range employees {
-		_ = CreateEmployee(&i)
+	employee := Employee{EmployeeName: "getemployee", Email: "get@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	if err := CreateEmployee(&employee); err != nil {
+		t.Error("not created")
 	}
 
-	var count2 int64
-	config.DB.Table("employee").Count(&count2)
-	assert.Equal(t, count1+3, count2)
+	if err := GetEmployeeById(&employee, strconv.FormatUint(uint64(employee.Id), 10)); err != nil {
+		t.Error("not found")
+	}
+
 }
 
 func TestUpdateEmployee(t *testing.T) {
@@ -251,11 +231,25 @@ func TestDeleteEmployee(t *testing.T) {
 
 // =========================================
 func TestGetEmployeeByName(t *testing.T) {
-
+	config.InitDatabase()
+	employee := Employee{EmployeeName: "testname", Email: "get@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	if err := CreateEmployee(&employee); err != nil {
+		t.Error("not created")
+	}
+	var employees []Employee
+	if err := GetEmployeeByName(&employees, "testname"); err != nil {
+		t.Error("not found")
+	}
 }
 
 func TestGetEmployeeByDate(t *testing.T) {
-
+	config.InitDatabase()
+	employee := Employee{EmployeeName: "todayname", Email: "get@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	if err := CreateEmployee(&employee); err != nil {
+		t.Error("not created")
+	}
+	var employees []Employee
+	if err := GetEmployeeByDate(&employees, time.Now().Format("2020-01-10")); err != nil {
+		t.Error("not found")
+	}
 }
-
-// write testing code for get~~byid
