@@ -4,7 +4,6 @@ import (
 	"manager/config"
 	"strconv"
 	"testing"
-	"time"
 
 	"github.com/go-playground/assert/v2"
 )
@@ -249,7 +248,7 @@ func TestGetEmployeeByDate(t *testing.T) {
 		t.Error("not created")
 	}
 	var employees []Employee
-	if err := GetEmployeeByDate(&employees, time.Now().Format("2020-01-10")); err != nil {
+	if err := GetEmployeeByDate(&employees, employee.CreatedAt.String()); err != nil {
 		t.Error("not found")
 	}
 }
