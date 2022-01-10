@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"manager/admin"
 	"manager/config"
 	"manager/models"
 	"manager/routes"
@@ -23,7 +24,7 @@ func main() {
 		fmt.Println("Status: ", err)
 	}
 	// table created automatically
-	err = config.DB.AutoMigrate(&models.Company{}, &models.Department{}, &models.Team{}, &models.Employee{}, &models.User{})
+	err = config.DB.AutoMigrate(&models.Company{}, &models.Department{}, &models.Team{}, &models.Employee{}, &admin.User{})
 
 	r := routes.Routers() // routers
 	r.Use(gin.Logger())   // use logger middleware

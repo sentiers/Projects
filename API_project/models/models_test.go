@@ -1,8 +1,7 @@
-// company 먼저
-
 package models
 
 import (
+	"manager/admin"
 	"manager/config"
 	"strconv"
 	"testing"
@@ -15,7 +14,7 @@ import (
 func dbConnection() {
 	dsn := "root:root@tcp(127.0.0.1:3306)/manager?charset=utf8mb4&parseTime=True&loc=Local"
 	config.DB, _ = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	_ = config.DB.AutoMigrate(&Company{}, &Department{}, &Team{}, &Employee{}, &User{})
+	_ = config.DB.AutoMigrate(&Company{}, &Department{}, &Team{}, &Employee{}, &admin.User{})
 }
 
 // Company Model Test ======================================
