@@ -13,6 +13,11 @@ func Routers() *gin.Engine {
 	// create gin app
 	r := gin.Default()
 
+	// root path for testing
+	r.GET("/hello", func(c *gin.Context) {
+		c.String(200, "hello")
+	})
+
 	// company api group
 	c := r.Group("/company")
 	{
