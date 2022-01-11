@@ -1,7 +1,8 @@
 package routes
 
 import (
-	"manager/controller"
+	"manager/admin"
+	"manager/controllers"
 	"manager/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -12,57 +13,62 @@ func Routers() *gin.Engine {
 	// create gin app
 	r := gin.Default()
 
+	// root path for testing
+	r.GET("/hello", func(c *gin.Context) {
+		c.String(200, "hello")
+	})
+
 	// company api group
 	c := r.Group("/company")
 	{
 		c.Use(middleware.Authz())
-		c.GET("/", controller.GetAllCompanies)
-		c.POST("/", controller.CreateCompany)
-		c.GET("/:id", controller.GetCompanyById)
-		c.PUT("/:id", controller.UpdateCompany)
-		c.DELETE("/:id", controller.DeleteCompany)
+		c.GET("/", controllers.GetAllCompanies)
+		c.POST("/", controllers.CreateCompany)
+		c.GET("/:id", controllers.GetCompanyById)
+		c.PUT("/:id", controllers.UpdateCompany)
+		c.DELETE("/:id", controllers.DeleteCompany)
 	}
 
 	// department api group
 	d := r.Group("/department")
 	{
 		d.Use(middleware.Authz())
-		d.GET("/", controller.GetAllDepartments)
-		d.POST("/", controller.CreateDepartment)
-		d.GET("/:id", controller.GetDepartmentById)
-		d.PUT("/:id", controller.UpdateDepartment)
-		d.DELETE("/:id", controller.DeleteDepartment)
+		d.GET("/", controllers.GetAllDepartments)
+		d.POST("/", controllers.CreateDepartment)
+		d.GET("/:id", controllers.GetDepartmentById)
+		d.PUT("/:id", controllers.UpdateDepartment)
+		d.DELETE("/:id", controllers.DeleteDepartment)
 	}
 
 	// team api group
 	t := r.Group("/team")
 	{
 		t.Use(middleware.Authz())
-		t.GET("/", controller.GetAllTeams)
-		t.POST("/", controller.CreateTeam)
-		t.GET("/:id", controller.GetTeamById)
-		t.PUT("/:id", controller.UpdateTeam)
-		t.DELETE("/:id", controller.DeleteTeam)
+		t.GET("/", controllers.GetAllTeams)
+		t.POST("/", controllers.CreateTeam)
+		t.GET("/:id", controllers.GetTeamById)
+		t.PUT("/:id", controllers.UpdateTeam)
+		t.DELETE("/:id", controllers.DeleteTeam)
 	}
 
 	// employee api group
 	e := r.Group("/employee")
 	{
 		e.Use(middleware.Authz())
-		e.GET("/", controller.GetAllEmployees)
-		e.POST("/", controller.CreateEmployee)
-		e.GET("/:id", controller.GetEmployeeById)
-		e.PUT("/:id", controller.UpdateEmployee)
-		e.DELETE("/:id", controller.DeleteEmployee)
+		e.GET("/", controllers.GetAllEmployees)
+		e.POST("/", controllers.CreateEmployee)
+		e.GET("/:id", controllers.GetEmployeeById)
+		e.PUT("/:id", controllers.UpdateEmployee)
+		e.DELETE("/:id", controllers.DeleteEmployee)
 
 		// search and filter
-		e.GET("/name/:name", controller.GetEmployeeByName)
-		e.GET("/date/:date", controller.GetEmployeeByDate)
+		e.GET("/name/:name", controllers.GetEmployeeByName)
+		e.GET("/date/:date", controllers.GetEmployeeByDate)
 	}
 
 	// auth api
-	r.POST("/signup", controller.Signup)
-	r.POST("/login", controller.Login)
+	r.POST("/signup", admin.Signup)
+	r.POST("/login", admin.Login)
 
 	return r
 }
