@@ -42,6 +42,7 @@ func TestCreateCompany(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
+	//config.DB.Unscoped().Where("company_name = ?", company.CompanyName).Delete(&models.Company{})
 }
 
 func TestGetCompanyById(t *testing.T) {

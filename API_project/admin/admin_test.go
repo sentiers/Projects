@@ -14,18 +14,6 @@ import (
 )
 
 // =============================================================
-
-func TestHashPassword(t *testing.T) {
-	user := User{
-		Password: "secret",
-	}
-
-	err := user.HashPassword(user.Password)
-	assert.NoError(t, err)
-
-	os.Setenv("passwordHash", user.Password)
-}
-
 func TestCreateUser(t *testing.T) {
 	var userResult User
 
@@ -51,6 +39,16 @@ func TestCreateUser(t *testing.T) {
 
 	assert.Equal(t, "test@email.com", userResult.Email)
 
+}
+func TestHashPassword(t *testing.T) {
+	user := User{
+		Password: "secret",
+	}
+
+	err := user.HashPassword(user.Password)
+	assert.NoError(t, err)
+
+	os.Setenv("passwordHash", user.Password)
 }
 
 func TestCheckPassword(t *testing.T) {
@@ -106,17 +104,15 @@ func TestSignUp(t *testing.T) {
 	payload, err := json.Marshal(&user)
 	assert.NoError(t, err)
 
-	request, err := http.NewRequest("POST", "/api/public/signup", bytes.NewBuffer(payload))
+	request, err := http.NewRequest("POST", "/signup", bytes.NewBuffer(payload))
 	assert.NoError(t, err)
 
 	w := httptest.NewRecorder()
-
 	c, _ := gin.CreateTestContext(w)
 	c.Request = request
 
 	err = config.InitDatabase()
 	assert.NoError(t, err)
-
 	config.DB.AutoMigrate(&User{})
 
 	Signup(c)
@@ -135,7 +131,7 @@ func TestSignUpInvalidJSON(t *testing.T) {
 	payload, err := json.Marshal(&user)
 	assert.NoError(t, err)
 
-	request, err := http.NewRequest("POST", "/api/public/signup", bytes.NewBuffer(payload))
+	request, err := http.NewRequest("POST", "/signup", bytes.NewBuffer(payload))
 	assert.NoError(t, err)
 
 	w := httptest.NewRecorder()
@@ -157,7 +153,7 @@ func TestLogin(t *testing.T) {
 	payload, err := json.Marshal(&user)
 	assert.NoError(t, err)
 
-	request, err := http.NewRequest("POST", "/api/public/login", bytes.NewBuffer(payload))
+	request, err := http.NewRequest("POST", "/login", bytes.NewBuffer(payload))
 	assert.NoError(t, err)
 
 	w := httptest.NewRecorder()
@@ -182,7 +178,7 @@ func TestLoginInvalidJSON(t *testing.T) {
 	payload, err := json.Marshal(&user)
 	assert.NoError(t, err)
 
-	request, err := http.NewRequest("POST", "/api/public/login", bytes.NewBuffer(payload))
+	request, err := http.NewRequest("POST", "/login", bytes.NewBuffer(payload))
 	assert.NoError(t, err)
 
 	w := httptest.NewRecorder()
@@ -204,7 +200,7 @@ func TestLoginInvalidCredentials(t *testing.T) {
 	payload, err := json.Marshal(&user)
 	assert.NoError(t, err)
 
-	request, err := http.NewRequest("POST", "/api/public/login", bytes.NewBuffer(payload))
+	request, err := http.NewRequest("POST", "/login", bytes.NewBuffer(payload))
 	assert.NoError(t, err)
 
 	w := httptest.NewRecorder()
