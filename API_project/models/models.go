@@ -154,8 +154,11 @@ func (c *Employee) TableName() string {
 	return "employee"
 }
 
-func GetAllEmployees(employee *[]Employee) (err error) {
-	if err = config.DB.Find(employee).Error; err != nil {
+func GetAllEmployees(employee *[]Employee, pagination *Pagination) (err error) {
+	offset := (pagination.Page - 1) * pagination.Limit
+	queryBuider := config.DB.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
+	result := queryBuider.Model(Employee{}).Where(employee).Find(employee)
+	if err = result.Error; err != nil {
 		return err
 	}
 	return nil
@@ -183,4 +186,28 @@ func UpdateEmployee(employee *Employee) (err error) {
 func DeleteEmployee(employee *Employee, key string) (err error) {
 	config.DB.Delete(employee, key)
 	return nil
+}
+
+// =========================================
+
+func GetEmployeeByName(employee *[]Employee, key string) (err error) {
+	if err = config.DB.Find(&employee, "employee_name = ?", key).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func GetEmployeeByDate(employee *[]Employee, key string) (err error) {
+	if err = config.DB.Find(&employee, "created_at >= ?", key).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// Pagination Model=====================================================
+
+type Pagination struct {
+	Limit int    `json:"limit"`
+	Page  int    `json:"page"`
+	Sort  string `json:"sort"`
 }

@@ -3,7 +3,7 @@ package middleware
 import (
 	"strings"
 
-	"manager/auth"
+	"manager/admin"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,7 +33,7 @@ func Authz() gin.HandlerFunc {
 			return
 		}
 
-		jwtWrapper := auth.JwtWrapper{
+		jwtWrapper := admin.JwtWrapper{
 			SecretKey: "verysecretkey",
 			Issuer:    "Alchera",
 		}
