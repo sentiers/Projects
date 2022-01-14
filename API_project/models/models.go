@@ -53,7 +53,7 @@ type Department struct {
 	Id             uint   `gorm:"primarykey" json:"id"`
 	DepartmentName string `gorm:"type:varchar(255); not null" json:"departmentname"`
 	// set foreignkey
-	Company   Company `gorm:"foreignkey:CompanyId; references:Id"`
+	Company   Company `gorm:"foreignkey:CompanyId; references:Id" json:"company"`
 	CompanyId uint    `json:"companyid"`
 }
 
@@ -95,11 +95,13 @@ func DeleteDepartment(department *Department, key string) (err error) {
 // Team Model=====================================================
 
 type Team struct {
-	Id       int    `gorm:"primarykey" json:"id"`
+	Id       uint   `gorm:"primarykey" json:"id"`
 	TeamName string `gorm:"type:varchar(255); not null" json:"teamname"`
 	// set foreignkey
-	Department   Department `gorm:"foreignkey:DepartmentId; references:Id"`
+	Department   Department `gorm:"foreignkey:DepartmentId; references:Id" json:"department"`
 	DepartmentId uint       `json:"departmentid"`
+	// set relation
+	Employee []*Employee `gorm:"many2many:team_emp;" json:"employee"`
 }
 
 func (c *Team) TableName() string {
@@ -121,7 +123,8 @@ func CreateTeam(team *Team) (err error) {
 }
 
 func GetTeamById(team *Team, key string) (err error) {
-	if err = config.DB.Preload("Department.Company").First(&team, key).Error; err != nil {
+	// with team member data
+	if err = config.DB.Preload("Department.Company").Preload("Employee.Team.Department.Company").First(&team, key).Error; err != nil {
 		return err
 	}
 	return nil
@@ -140,14 +143,13 @@ func DeleteTeam(team *Team, key string) (err error) {
 // Employee Model=====================================================
 
 type Employee struct { // many to many , 대문자 문제 fix
-	Id           int    `gorm:"primarykey" json:"id"`
-	EmployeeName string `gorm:"type:varchar(255); not null" json:"employeename"`
-	Email        string `gorm:"type:varchar(255); not null" json:"email"`
-	PhoneNumber  string `gorm:"type:varchar(255); not null" json:"phonenumber"`
-	// set foreignkey
-	Team      Team      `gorm:"foreignkey:TeamId; references:Id"`
-	TeamId    uint      `json:"teamid"`
-	CreatedAt time.Time `json:"createdat"`
+	Id           uint      `gorm:"primarykey" json:"id"`
+	EmployeeName string    `gorm:"type:varchar(255); not null" json:"employeename"`
+	Email        string    `gorm:"type:varchar(255); not null" json:"email"`
+	PhoneNumber  string    `gorm:"type:varchar(255); not null" json:"phonenumber"`
+	CreatedAt    time.Time `json:"createdat"`
+	// set relation
+	Team []*Team `gorm:"many2many:team_emp;" json:"team"`
 }
 
 func (c *Employee) TableName() string {

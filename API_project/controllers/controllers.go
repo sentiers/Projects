@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-sql-driver/mysql"
 
 	"strconv"
 )
@@ -265,11 +264,11 @@ func GetAllEmployees(c *gin.Context) {
 
 	if err := models.GetAllEmployees(&employee, &pagination); err != nil {
 		log.Println(err.Error())
-		mysqlerr := err.(*mysql.MySQLError)
-		if mysqlerr.Number == 1054 {
-			err = errors.New("sort")
-			c.JSON(http.StatusBadRequest, gin.H{"Bad request": err.Error()})
-		}
+		// mysqlerr := err.(*mysql.MySQLError)
+		// if mysqlerr.Number == 1054 {
+		// 	err = errors.New("sort")
+		// 	c.JSON(http.StatusBadRequest, gin.H{"Bad request": err.Error()})
+		// }
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}

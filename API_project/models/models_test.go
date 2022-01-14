@@ -175,7 +175,7 @@ func TestDeleteTeam(t *testing.T) {
 // Employee Model Test ======================================
 func TestCreateEmployee(t *testing.T) {
 	config.InitDatabase()
-	employee := Employee{EmployeeName: "createemployee", Email: "create@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := Employee{EmployeeName: "createemployee", Email: "create@email.com", PhoneNumber: "010-1234-5678"}
 	if err := CreateEmployee(&employee); err != nil {
 		t.Error("not created")
 	}
@@ -187,7 +187,7 @@ func TestCreateEmployee(t *testing.T) {
 func TestGetEmployeeById(t *testing.T) {
 	config.InitDatabase()
 
-	employee := Employee{EmployeeName: "getemployee", Email: "get@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := Employee{EmployeeName: "getemployee", Email: "get@email.com", PhoneNumber: "010-1234-5678"}
 	if err := CreateEmployee(&employee); err != nil {
 		t.Error("not created")
 	}
@@ -201,7 +201,7 @@ func TestGetEmployeeById(t *testing.T) {
 func TestUpdateEmployee(t *testing.T) {
 	config.InitDatabase()
 
-	employee := Employee{EmployeeName: "updateemployee", Email: "update@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := Employee{EmployeeName: "updateemployee", Email: "update@email.com", PhoneNumber: "010-1234-5678"}
 	if err := CreateEmployee(&employee); err != nil {
 		t.Error("not created")
 	}
@@ -214,7 +214,7 @@ func TestUpdateEmployee(t *testing.T) {
 func TestDeleteEmployee(t *testing.T) {
 	config.InitDatabase()
 
-	employee := Employee{EmployeeName: "deleteemployee", Email: "delete@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := Employee{EmployeeName: "deleteemployee", Email: "delete@email.com", PhoneNumber: "010-1234-5678"}
 	if err := CreateEmployee(&employee); err != nil {
 		t.Error("not created")
 	}
@@ -231,7 +231,7 @@ func TestDeleteEmployee(t *testing.T) {
 // =========================================
 func TestGetEmployeeByName(t *testing.T) {
 	config.InitDatabase()
-	employee := Employee{EmployeeName: "testname", Email: "get@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := Employee{EmployeeName: "testname", Email: "get@email.com", PhoneNumber: "010-1234-5678"}
 	if err := CreateEmployee(&employee); err != nil {
 		t.Error("not created")
 	}
@@ -243,7 +243,7 @@ func TestGetEmployeeByName(t *testing.T) {
 
 func TestGetEmployeeByDate(t *testing.T) {
 	config.InitDatabase()
-	employee := Employee{EmployeeName: "todayname", Email: "get@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := Employee{EmployeeName: "todayname", Email: "get@email.com", PhoneNumber: "010-1234-5678"}
 	if err := CreateEmployee(&employee); err != nil {
 		t.Error("not created")
 	}
