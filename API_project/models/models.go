@@ -62,7 +62,7 @@ func (c *Department) TableName() string {
 }
 
 func GetAllDepartments(department *[]Department) (err error) {
-	if err = config.DB.Find(department).Error; err != nil {
+	if err = config.DB.Preload("Company").Find(department).Error; err != nil {
 		return err
 	}
 	return nil
@@ -76,7 +76,7 @@ func CreateDepartment(department *Department) (err error) {
 }
 
 func GetDepartmentById(department *Department, key string) (err error) {
-	if err = config.DB.First(&department, key).Error; err != nil {
+	if err = config.DB.Preload("Company").First(&department, key).Error; err != nil {
 		return err
 	}
 	return nil
@@ -107,7 +107,7 @@ func (c *Team) TableName() string {
 }
 
 func GetAllTeams(team *[]Team) (err error) {
-	if err = config.DB.Find(team).Error; err != nil {
+	if err = config.DB.Preload("Department.Company").Find(team).Error; err != nil {
 		return err
 	}
 	return nil
@@ -121,7 +121,7 @@ func CreateTeam(team *Team) (err error) {
 }
 
 func GetTeamById(team *Team, key string) (err error) {
-	if err = config.DB.First(&team, key).Error; err != nil {
+	if err = config.DB.Preload("Department.Company").First(&team, key).Error; err != nil {
 		return err
 	}
 	return nil
@@ -139,7 +139,7 @@ func DeleteTeam(team *Team, key string) (err error) {
 
 // Employee Model=====================================================
 
-type Employee struct {
+type Employee struct { // many to many , 대문자 문제 fix
 	Id           int    `gorm:"primarykey" json:"id"`
 	EmployeeName string `gorm:"type:varchar(255); not null" json:"employeename"`
 	Email        string `gorm:"type:varchar(255); not null" json:"email"`
@@ -157,7 +157,7 @@ func (c *Employee) TableName() string {
 func GetAllEmployees(employee *[]Employee, pagination *Pagination) (err error) {
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := config.DB.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
-	result := queryBuider.Model(Employee{}).Where(employee).Find(employee)
+	result := queryBuider.Model(Employee{}).Where(employee).Preload("Team.Department.Company").Find(employee)
 	if err = result.Error; err != nil {
 		return err
 	}
@@ -172,7 +172,7 @@ func CreateEmployee(employee *Employee) (err error) {
 }
 
 func GetEmployeeById(employee *Employee, key string) (err error) {
-	if err = config.DB.First(&employee, key).Error; err != nil {
+	if err = config.DB.Preload("Team.Department.Company").First(&employee, key).Error; err != nil {
 		return err
 	}
 	return nil
@@ -191,14 +191,14 @@ func DeleteEmployee(employee *Employee, key string) (err error) {
 // =========================================
 
 func GetEmployeeByName(employee *[]Employee, key string) (err error) {
-	if err = config.DB.Find(&employee, "employee_name = ?", key).Error; err != nil {
+	if err = config.DB.Preload("Team.Department.Company").Find(&employee, "employee_name = ?", key).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 func GetEmployeeByDate(employee *[]Employee, key string) (err error) {
-	if err = config.DB.Find(&employee, "created_at >= ?", key).Error; err != nil {
+	if err = config.DB.Preload("Team.Department.Company").Find(&employee, "created_at >= ?", key).Error; err != nil {
 		return err
 	}
 	return nil
