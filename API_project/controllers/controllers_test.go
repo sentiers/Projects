@@ -306,7 +306,7 @@ func TestCreateEmployee(t *testing.T) {
 	router := gin.Default()
 	router.POST("/employee", CreateEmployee)
 
-	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678"}
 	payload, _ := json.Marshal(&employee)
 
 	w := httptest.NewRecorder()
@@ -322,7 +322,7 @@ func TestGetEmployeeById(t *testing.T) {
 	router := gin.Default()
 	router.GET("/employee/:id", GetEmployeeById)
 
-	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678"}
 	if err := models.CreateEmployee(&employee); err != nil {
 		t.Error("not created")
 	}
@@ -341,13 +341,13 @@ func TestUpdateEmployee(t *testing.T) {
 	router := gin.Default()
 	router.PUT("/employee/:id", UpdateEmployee)
 
-	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678"}
 	if err := models.CreateEmployee(&employee); err != nil {
 		t.Error("not created")
 	}
 	str := "/employee/" + strconv.FormatUint(uint64(employee.Id), 10)
 
-	newemployee := models.Employee{EmployeeName: "newcontrolemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	newemployee := models.Employee{EmployeeName: "newcontrolemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678"}
 	payload, _ := json.Marshal(&newemployee)
 
 	w := httptest.NewRecorder()
@@ -363,7 +363,7 @@ func TestDeleteEmployee(t *testing.T) {
 	router := gin.Default()
 	router.DELETE("/employee/:id", DeleteEmployee)
 
-	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678"}
 	if err := models.CreateEmployee(&employee); err != nil {
 		t.Error("not created")
 	}
@@ -384,7 +384,7 @@ func TestGetEmployeeByName(t *testing.T) {
 	router := gin.Default()
 	router.GET("/employee/name/:name", GetEmployeeByName)
 
-	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678"}
 	if err := models.CreateEmployee(&employee); err != nil {
 		t.Error("not created")
 	}
@@ -403,7 +403,7 @@ func TestGetEmployeeByDate(t *testing.T) {
 	router := gin.Default()
 	router.GET("/employee/date/:date", GetEmployeeByDate)
 
-	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678", TeamId: 1}
+	employee := models.Employee{EmployeeName: "controlemployee", Email: "control@email.com", PhoneNumber: "010-1234-5678"}
 	if err := models.CreateEmployee(&employee); err != nil {
 		t.Error("not created")
 	}

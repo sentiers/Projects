@@ -61,6 +61,10 @@ func Routers() *gin.Engine {
 		e.PUT("/:id", controllers.UpdateEmployee)
 		e.DELETE("/:id", controllers.DeleteEmployee)
 
+		// team_emp
+		e.POST("/:id/addteam/:teamid", controllers.AddEmployeeTeam)
+		e.DELETE("/:id/delteam/:teamid", controllers.DeleteEmployeeTeam)
+
 		// search and filter
 		e.GET("/name/:name", controllers.GetEmployeeByName)
 		e.GET("/date/:date", controllers.GetEmployeeByDate)

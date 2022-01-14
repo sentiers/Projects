@@ -22,5 +22,6 @@ func main() {
 	r := routes.Routers() // routers
 	r.Use(gin.Logger())   // use logger middleware
 
-	r.Run() // run
+	r.Run() // run in default PORT 8080
+	// r.Run(":4000") // run in PORT 4000
 }
