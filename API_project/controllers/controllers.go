@@ -3,10 +3,12 @@ package controllers
 import (
 	"errors"
 	"log"
+	"manager/config"
 	"manager/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-sql-driver/mysql"
 
 	"strconv"
 )
@@ -264,11 +266,11 @@ func GetAllEmployees(c *gin.Context) {
 
 	if err := models.GetAllEmployees(&employee, &pagination); err != nil {
 		log.Println(err.Error())
-		// mysqlerr := err.(*mysql.MySQLError)
-		// if mysqlerr.Number == 1054 {
-		// 	err = errors.New("sort")
-		// 	c.JSON(http.StatusBadRequest, gin.H{"Bad request": err.Error()})
-		// }
+		mysqlerr := err.(*mysql.MySQLError)
+		if mysqlerr.Number == 1054 {
+			err = errors.New("sort")
+			c.JSON(http.StatusBadRequest, gin.H{"Bad request": err.Error()})
+		}
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
@@ -292,6 +294,49 @@ func CreateEmployee(c *gin.Context) {
 
 	c.JSON(http.StatusOK, employee)
 }
+
+// ======================= Team_Emp ==========================
+func AddEmployeeTeam(c *gin.Context) {
+	var employee models.Employee
+	var team models.Team
+	id := c.Params.ByName("id")
+	teamid := c.Params.ByName("teamid")
+
+	if err := models.GetEmployeeById(&employee, id); err != nil {
+		log.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+	if err := models.GetTeamById(&team, teamid); err != nil {
+		log.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+	config.DB.Model(&employee).Association("Team").Append(&team)
+	c.JSON(http.StatusOK, employee)
+}
+
+func DeleteEmployeeTeam(c *gin.Context) {
+	var employee models.Employee
+	var team models.Team
+	id := c.Params.ByName("id")
+	teamid := c.Params.ByName("teamid")
+
+	if err := models.GetEmployeeById(&employee, id); err != nil {
+		log.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+	if err := models.GetTeamById(&team, teamid); err != nil {
+		log.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+	config.DB.Model(&employee).Association("Team").Delete(&team)
+	c.JSON(http.StatusOK, gin.H{"team" + teamid: "is removed"})
+}
+
+// ===========================================================
 
 func GetEmployeeById(c *gin.Context) {
 	var employee models.Employee

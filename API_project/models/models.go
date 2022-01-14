@@ -142,7 +142,7 @@ func DeleteTeam(team *Team, key string) (err error) {
 
 // Employee Model=====================================================
 
-type Employee struct { // many to many , 대문자 문제 fix
+type Employee struct {
 	Id           uint      `gorm:"primarykey" json:"id"`
 	EmployeeName string    `gorm:"type:varchar(255); not null" json:"employeename"`
 	Email        string    `gorm:"type:varchar(255); not null" json:"email"`
@@ -172,6 +172,8 @@ func CreateEmployee(employee *Employee) (err error) {
 	}
 	return nil
 }
+
+// ===========================================================
 
 func GetEmployeeById(employee *Employee, key string) (err error) {
 	if err = config.DB.Preload("Team.Department.Company").First(&employee, key).Error; err != nil {
