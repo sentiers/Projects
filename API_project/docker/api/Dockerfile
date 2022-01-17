@@ -8,13 +8,13 @@ COPY . /API_project
 WORKDIR /API_project
 
 # RUN go build
-RUN go build -o apiserver
+RUN go build -o api-server
 
-# Port
-EXPOSE 8080
+# # Port
+# EXPOSE 8080
 
-# Define default command.
-CMD [ "./apiserver" ]
+# # Define default command.
+# CMD [ "./api-server" ]
 
 # ====== Docker command ======
 # docker build -t apiserver .
