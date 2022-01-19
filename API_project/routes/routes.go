@@ -60,19 +60,21 @@ func Routers() *gin.Engine {
 		e.GET("/:id", controllers.GetEmployeeById)
 		e.PUT("/:id", controllers.UpdateEmployee)
 		e.DELETE("/:id", controllers.DeleteEmployee)
-
-		// team_emp
-		e.POST("/:id/addteam/:teamid", controllers.AddEmployeeTeam)
-		e.DELETE("/:id/delteam/:teamid", controllers.DeleteEmployeeTeam)
-
 		// search and filter
 		e.GET("/name/:name", controllers.GetEmployeeByName)
 		e.GET("/date/:date", controllers.GetEmployeeByDate)
+		// team_emp
+		e.POST("/:id/addteam/:teamid", controllers.AddEmployeeTeam)
+		e.DELETE("/:id/delteam/:teamid", controllers.DeleteEmployeeTeam)
 	}
 
-	// auth api
+	// local auth api
 	r.POST("/signup", admin.Signup)
 	r.POST("/login", admin.Login)
+
+	// google auth api
+	r.GET("/google/login", admin.GoogleLogin)
+	r.GET("/google/redirect", admin.GoogleRedirect)
 
 	return r
 }
