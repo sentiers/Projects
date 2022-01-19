@@ -80,5 +80,9 @@ func Routers() *gin.Engine {
 	r.GET("/github/login", admin.GithubLogin)
 	r.GET("/github/redirect", admin.GithubRedirect)
 
+	// facebook auth api
+	r.GET("/facebook/login", admin.FacebookLogin)
+	r.GET("/facebook/redirect", admin.FacebookRedirect)
+
 	return r
 }

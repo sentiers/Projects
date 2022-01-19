@@ -18,7 +18,7 @@ func main() {
 		fmt.Println("Status: ", err)
 	}
 	// table created automatically
-	config.DB.AutoMigrate(&models.Company{}, &models.Department{}, &models.Team{}, &models.Employee{}, &admin.User{}, &admin.User_Google{}, &admin.User_Github{})
+	config.DB.AutoMigrate(&models.Company{}, &models.Department{}, &models.Team{}, &models.Employee{}, &admin.User{}, &admin.User_Google{}, &admin.User_Github{}, &admin.User_Facebook{})
 
 	r := routes.Routers() // routers
 	r.Use(gin.Logger())   // use logger middleware
