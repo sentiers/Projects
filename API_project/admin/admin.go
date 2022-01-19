@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"manager/config"
@@ -16,6 +17,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/github"
 	"golang.org/x/oauth2/google"
 	"gorm.io/gorm"
 
@@ -269,10 +271,10 @@ var oauthConf *oauth2.Config
 
 const oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
 
-func oauthInit() {
+func oauthGoogleInit() {
 	oauthConf = &oauth2.Config{
-		ClientID:     "client id",
-		ClientSecret: "client secret",
+		ClientID:     "clientid",
+		ClientSecret: "clientsecret",
 		RedirectURL:  "http://localhost:8080/google/redirect",
 		Scopes: []string{
 			"https://www.googleapis.com/auth/userinfo.email",
@@ -293,7 +295,7 @@ func getLoginURL(state string) string {
 }
 
 func GoogleLogin(c *gin.Context) {
-	oauthInit()
+	oauthGoogleInit()
 	token := getToken()
 	url := getLoginURL(token)
 	c.Redirect(http.StatusMovedPermanently, url)
@@ -328,6 +330,131 @@ func GoogleRedirect(c *gin.Context) {
 	json.Unmarshal(contents, &user)
 
 	if err := user.CreateUser_Google(); err != nil {
+		log.Println(err.Error())
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	// start generating token
+
+	jwtWrapper := JwtWrapper{
+		SecretKey:       "verysecretkey",
+		Issuer:          "Alchera",
+		ExpirationHours: 24,
+	}
+
+	signedToken, err := jwtWrapper.GenerateToken(user.Email)
+	if err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"msg": "error signing token",
+		})
+		c.Abort()
+		return
+	}
+
+	tokenResponse := LoginResponse{
+		Token: signedToken,
+	}
+
+	c.JSON(200, tokenResponse)
+
+	return
+}
+
+// Github User =====================================================
+
+type User_Github struct {
+	Email string `gorm:"primarykey; type:varchar(255); not null" json:"email"`
+	Name  string `json:"name"`
+}
+
+func (c *User_Github) TableName() string {
+	return "user_github"
+}
+
+// create a admin user in the db if the user is not exist
+func (user *User_Github) CreateUser_Github() error {
+
+	exist := config.DB.First(&user, "email = ?", user.Email)
+	if exist.Error == nil { // skip if user is already exist
+		return nil
+	}
+	result := config.DB.Create(&user)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+// Github Oauth ------------------------------------------
+
+const oauthGithubUrlAPI = "https://api.github.com/user"
+
+func oauthGithubInit() {
+	oauthConf = &oauth2.Config{
+		ClientID:     "clientid",
+		ClientSecret: "clientsecret",
+		RedirectURL:  "http://localhost:8080/github/redirect",
+		Scopes:       []string{"user"},
+		Endpoint:     github.Endpoint,
+	}
+}
+
+// func getToken() string {
+// 	b := make([]byte, 32)
+// 	rand.Read(b)
+// 	return base64.RawStdEncoding.EncodeToString(b)
+// }
+
+// func getLoginURL(state string) string {
+// 	return oauthConf.AuthCodeURL(state)
+// }
+
+func GithubLogin(c *gin.Context) {
+	oauthGithubInit()
+	token := getToken()
+	url := getLoginURL(token)
+	c.Redirect(http.StatusMovedPermanently, url)
+}
+
+func GithubRedirect(c *gin.Context) {
+
+	code := c.Query("code")
+
+	token, err := oauthConf.Exchange(context.Background(), code)
+	if err != nil {
+		c.JSON(403, gin.H{"Message": err.Error()})
+		return
+	}
+
+	// Get request to a set URL
+	request, err := http.NewRequest("GET", oauthGithubUrlAPI, nil)
+	if err != nil {
+		log.Panic("API Request creation failed")
+	}
+	// set authorization header: token XXXXXXXXXXXXXXXXXXXXXXXXXXX
+	authHeader := fmt.Sprintf("token %s", token.AccessToken)
+	request.Header.Set("Authorization", authHeader)
+
+	// Make the request
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
+		c.JSON(403, gin.H{"Message": err.Error()})
+		return
+	}
+
+	contents, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		c.JSON(403, gin.H{"Message": err.Error()})
+		return
+	}
+
+	// save user info in database
+	var user User_Github
+	json.Unmarshal(contents, &user)
+
+	if err := user.CreateUser_Github(); err != nil {
 		log.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
 		return

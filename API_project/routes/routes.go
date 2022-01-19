@@ -76,5 +76,9 @@ func Routers() *gin.Engine {
 	r.GET("/google/login", admin.GoogleLogin)
 	r.GET("/google/redirect", admin.GoogleRedirect)
 
+	// github auth api
+	r.GET("/github/login", admin.GithubLogin)
+	r.GET("/github/redirect", admin.GithubRedirect)
+
 	return r
 }
