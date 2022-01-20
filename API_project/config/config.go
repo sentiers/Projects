@@ -10,6 +10,7 @@ var DB *gorm.DB
 
 // InitDatabase creates a db
 func InitDatabase() (err error) {
+	//dsn := "root:root@tcp(root:3306)/manager?charset=utf8mb4&parseTime=True&loc=Local"
 	dsn := "root:root@tcp(127.0.0.1:3306)/manager?charset=utf8mb4&parseTime=True&loc=Local"
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
