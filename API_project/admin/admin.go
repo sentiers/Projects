@@ -507,13 +507,13 @@ func (user *User_Facebook) CreateUser_Facebook() error {
 
 // Facebook Oauth ------------------------------------------
 
-const oauthFacebookUrlAPI = "https://graph.facebook.com/me?access_token="
+const oauthFacebookUrlAPI = "https://graph.facebook.com/me?fields=name,email&access_token="
 
 func oauthFacebookInit() {
 	oauthConf = &oauth2.Config{
 		ClientID:     "clientid",
 		ClientSecret: "clientsecret",
-		RedirectURL:  "http://localhost:8080/facebook/redirect",
+		RedirectURL:  "{ngrok_url}/facebook/redirect",
 		Scopes:       []string{"public_profile", "email"},
 		Endpoint:     facebook.Endpoint,
 	}
@@ -536,7 +536,7 @@ func FacebookRedirect(c *gin.Context) {
 		return
 	}
 
-	response, err := http.Get(oauthFacebookUrlAPI + token.AccessToken + "&fields=id,name,email")
+	response, err := http.Get(oauthFacebookUrlAPI + token.AccessToken)
 	if err != nil {
 		c.JSON(403, gin.H{"Message": err.Error()})
 		return
