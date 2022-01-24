@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"errors"
+	"github.com/serntiers/api-server/config"
+	"github.com/serntiers/api-server/models"
 	"log"
-	"manager/config"
-	"manager/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

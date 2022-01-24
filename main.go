@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"manager/admin"
-	"manager/config"
-	"manager/models"
-	"manager/routes"
+	"github.com/serntiers/api-server/admin"
+	"github.com/serntiers/api-server/config"
+	"github.com/serntiers/api-server/models"
+	"github.com/serntiers/api-server/routes"
 
 	"github.com/gin-gonic/gin"
 )

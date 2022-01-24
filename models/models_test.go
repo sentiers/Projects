@@ -1,7 +1,7 @@
 package models
 
 import (
-	"manager/config"
+	"github.com/serntiers/api-server/config"
 	"strconv"
 	"testing"
 
