@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/serntiers/api-server/config"
+	"github.com/sentiers/api-server/config"
 	"io/ioutil"
 	"log"
 	"net/http"

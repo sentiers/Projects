@@ -3,7 +3,7 @@ package admin
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/serntiers/api-server/config"
+	"github.com/sentiers/api-server/config"
 	"net/http"
 	"net/http/httptest"
 	"os"

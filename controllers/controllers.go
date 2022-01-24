@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"errors"
-	"github.com/serntiers/api-server/config"
-	"github.com/serntiers/api-server/models"
+	"github.com/sentiers/api-server/config"
+	"github.com/sentiers/api-server/models"
 	"log"
 	"net/http"
 

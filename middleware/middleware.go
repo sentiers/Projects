@@ -3,7 +3,7 @@ package middleware
 import (
 	"strings"
 
-	"github.com/serntiers/api-server/admin"
+	"github.com/sentiers/api-server/admin"
 
 	"github.com/gin-gonic/gin"
 )

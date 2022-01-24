@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/serntiers/api-server/config"
+	"github.com/sentiers/api-server/config"
 	"strconv"
 	"testing"
 

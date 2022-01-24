@@ -3,8 +3,8 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/serntiers/api-server/config"
-	"github.com/serntiers/api-server/models"
+	"github.com/sentiers/api-server/config"
+	"github.com/sentiers/api-server/models"
 	"net/http"
 	"net/http/httptest"
 	"strconv"

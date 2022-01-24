@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"fmt"
-	"github.com/serntiers/api-server/admin"
-	"github.com/serntiers/api-server/config"
-	"github.com/serntiers/api-server/controllers"
+	"github.com/sentiers/api-server/admin"
+	"github.com/sentiers/api-server/config"
+	"github.com/sentiers/api-server/controllers"
 	"net/http"
 	"net/http/httptest"
 	"testing"

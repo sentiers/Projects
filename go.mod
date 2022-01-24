@@ -1,4 +1,4 @@
-module github.com/serntiers/api-server
+module github.com/sentiers/api-server
 
 go 1.17
 
