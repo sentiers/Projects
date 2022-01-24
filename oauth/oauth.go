@@ -37,7 +37,8 @@ func oauthGoogleInit(clientid string, clientsecret string, redirecturl string) {
 	}
 }
 
-func GoogleLogin(c *gin.Context) {
+func GoogleLogin(c *gin.Context, clientid string, clientsecret string, redirecturl string) {
+	oauthGoogleInit(clientid, clientsecret, redirecturl)
 	b := make([]byte, 32)
 	rand.Read(b)
 	token := base64.RawStdEncoding.EncodeToString(b)
@@ -85,7 +86,8 @@ func oauthGithubInit(clientid string, clientsecret string, redirecturl string) {
 	}
 }
 
-func GithubLogin(c *gin.Context) {
+func GithubLogin(c *gin.Context, clientid string, clientsecret string, redirecturl string) {
+	oauthGithubInit(clientid, clientsecret, redirecturl)
 	b := make([]byte, 32)
 	rand.Read(b)
 	token := base64.RawStdEncoding.EncodeToString(b)
@@ -141,7 +143,8 @@ func oauthFacebookInit(clientid string, clientsecret string, redirecturl string)
 	}
 }
 
-func FacebookLogin(c *gin.Context) {
+func FacebookLogin(c *gin.Context, clientid string, clientsecret string, redirecturl string) {
+	oauthFacebookInit(clientid, clientsecret, redirecturl)
 	b := make([]byte, 32)
 	rand.Read(b)
 	token := base64.RawStdEncoding.EncodeToString(b)
