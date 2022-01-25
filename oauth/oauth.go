@@ -24,7 +24,7 @@ const oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_
 
 var oauthGoogleConf *oauth2.Config
 
-func oauthGoogleInit(clientid string, clientsecret string, redirecturl string) {
+func OauthGoogleInit(clientid string, clientsecret string, redirecturl string) {
 	oauthGoogleConf = &oauth2.Config{
 		ClientID:     clientid,
 		ClientSecret: clientsecret,
@@ -37,8 +37,7 @@ func oauthGoogleInit(clientid string, clientsecret string, redirecturl string) {
 	}
 }
 
-func GoogleLogin(c *gin.Context, clientid string, clientsecret string, redirecturl string) {
-	oauthGoogleInit(clientid, clientsecret, redirecturl)
+func GoogleLogin(c *gin.Context) {
 	b := make([]byte, 32)
 	rand.Read(b)
 	token := base64.RawStdEncoding.EncodeToString(b)
@@ -76,7 +75,7 @@ const oauthGithubUrlAPI = "https://api.github.com/user"
 
 var oauthGithubConf *oauth2.Config
 
-func oauthGithubInit(clientid string, clientsecret string, redirecturl string) {
+func OauthGithubInit(clientid string, clientsecret string, redirecturl string) {
 	oauthGithubConf = &oauth2.Config{
 		ClientID:     clientid,
 		ClientSecret: clientsecret,
@@ -86,8 +85,7 @@ func oauthGithubInit(clientid string, clientsecret string, redirecturl string) {
 	}
 }
 
-func GithubLogin(c *gin.Context, clientid string, clientsecret string, redirecturl string) {
-	oauthGithubInit(clientid, clientsecret, redirecturl)
+func GithubLogin(c *gin.Context) {
 	b := make([]byte, 32)
 	rand.Read(b)
 	token := base64.RawStdEncoding.EncodeToString(b)
@@ -133,7 +131,7 @@ const oauthFacebookUrlAPI = "https://graph.facebook.com/me?fields=name,email&acc
 
 var oauthFacebookConf *oauth2.Config
 
-func oauthFacebookInit(clientid string, clientsecret string, redirecturl string) {
+func OauthFacebookInit(clientid string, clientsecret string, redirecturl string) {
 	oauthFacebookConf = &oauth2.Config{
 		ClientID:     clientid,
 		ClientSecret: clientsecret,
@@ -143,8 +141,7 @@ func oauthFacebookInit(clientid string, clientsecret string, redirecturl string)
 	}
 }
 
-func FacebookLogin(c *gin.Context, clientid string, clientsecret string, redirecturl string) {
-	oauthFacebookInit(clientid, clientsecret, redirecturl)
+func FacebookLogin(c *gin.Context) {
 	b := make([]byte, 32)
 	rand.Read(b)
 	token := base64.RawStdEncoding.EncodeToString(b)
