@@ -1,8 +1,9 @@
 package models
 
 import (
-	"github.com/sentiers/api-server/config"
 	"time"
+
+	"github.com/sentiers/api-server/v2/config"
 )
 
 // Company Model=====================================================

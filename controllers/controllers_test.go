@@ -3,12 +3,13 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/sentiers/api-server/config"
-	"github.com/sentiers/api-server/models"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
 	"testing"
+
+	"github.com/sentiers/api-server/v2/config"
+	"github.com/sentiers/api-server/v2/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"

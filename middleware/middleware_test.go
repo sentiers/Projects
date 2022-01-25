@@ -2,12 +2,13 @@ package middleware
 
 import (
 	"fmt"
-	"github.com/sentiers/api-server/admin"
-	"github.com/sentiers/api-server/config"
-	"github.com/sentiers/api-server/controllers"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/sentiers/api-server/v2/admin"
+	"github.com/sentiers/api-server/v2/config"
+	"github.com/sentiers/api-server/v2/controllers"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"

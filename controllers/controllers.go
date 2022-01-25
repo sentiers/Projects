@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"errors"
-	"github.com/sentiers/api-server/config"
-	"github.com/sentiers/api-server/models"
 	"log"
 	"net/http"
+
+	"github.com/sentiers/api-server/v2/config"
+	"github.com/sentiers/api-server/v2/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-sql-driver/mysql"

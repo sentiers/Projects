@@ -1,9 +1,10 @@
 package models
 
 import (
-	"github.com/sentiers/api-server/config"
 	"strconv"
 	"testing"
+
+	"github.com/sentiers/api-server/v2/config"
 
 	"github.com/go-playground/assert/v2"
 )

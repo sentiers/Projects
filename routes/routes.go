@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"github.com/sentiers/api-server/admin"
-	"github.com/sentiers/api-server/controllers"
-	"github.com/sentiers/api-server/middleware"
+	"github.com/sentiers/api-server/v2/admin"
+	"github.com/sentiers/api-server/v2/controllers"
+	"github.com/sentiers/api-server/v2/middleware"
 
 	"github.com/gin-gonic/gin"
 )

@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/sentiers/api-server/admin"
-	"github.com/sentiers/api-server/config"
-	"github.com/sentiers/api-server/models"
-	"github.com/sentiers/api-server/routes"
+
+	"github.com/sentiers/api-server/v2/admin"
+	"github.com/sentiers/api-server/v2/config"
+	"github.com/sentiers/api-server/v2/models"
+	"github.com/sentiers/api-server/v2/routes"
 
 	"github.com/gin-gonic/gin"
 )

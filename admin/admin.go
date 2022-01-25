@@ -6,10 +6,11 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/sentiers/api-server/config"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/sentiers/api-server/v2/config"
 
 	"errors"
 	"time"

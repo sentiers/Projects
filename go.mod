@@ -1,4 +1,4 @@
-module github.com/sentiers/api-server
+module github.com/sentiers/api-server/v2
 
 go 1.17
 

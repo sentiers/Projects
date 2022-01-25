@@ -3,11 +3,12 @@ package admin
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/sentiers/api-server/config"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
+
+	"github.com/sentiers/api-server/v2/config"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
